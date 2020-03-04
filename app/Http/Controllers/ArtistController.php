@@ -14,7 +14,8 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        //
+        $artists = artist::latest()->paginate(5);
+        return view('artists.index', compact('artists'))->with('i', (request()->input('page', 1) -1) * 5);
     }
 
     /**
@@ -24,7 +25,7 @@ class ArtistController extends Controller
      */
     public function create()
     {
-        //
+        return view('artists.create');
     }
 
     /**
@@ -35,7 +36,16 @@ class ArtistController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
+        artist::create($request->all());
+
+        return redirect()->route('artists.index')
+                            ->with('success' , 'Artist Added Successfully!');
+
     }
 
     /**
@@ -46,7 +56,7 @@ class ArtistController extends Controller
      */
     public function show(Artist $artist)
     {
-        //
+        return view('artists.show', compact('artist'));
     }
 
     /**
@@ -57,7 +67,7 @@ class ArtistController extends Controller
      */
     public function edit(Artist $artist)
     {
-        //
+        return view('artists.edit', compact('artist'));
     }
 
     /**
@@ -69,7 +79,15 @@ class ArtistController extends Controller
      */
     public function update(Request $request, Artist $artist)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
+        $artist->update($request->all());
+
+        return redirect()->route('artists.index')
+                            ->with('success', 'Artist Updated Successfully!');
     }
 
     /**
@@ -80,6 +98,9 @@ class ArtistController extends Controller
      */
     public function destroy(Artist $artist)
     {
-        //
+        $artist->delete();
+
+        return redirect()->route('artists.index')
+                            ->with('success', 'Artist Deleted Successfully!');
     }
 }

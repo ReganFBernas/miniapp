@@ -12,5 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('song');
+    return view('artists.layout');
+  
 });
+Route::resource('artists','ArtistController');
+
+//Route::get('/test', function(){
+   // dd("Hello");
+//});
