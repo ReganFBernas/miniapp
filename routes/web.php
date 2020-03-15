@@ -12,9 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('artists.layout');
+    return view('welcome');
   
 });
+
+Route::get('/','ArtistController@index');
+
+
+
 Route::resource('artists','ArtistController');
 
 //Route::get('/test', function(){
